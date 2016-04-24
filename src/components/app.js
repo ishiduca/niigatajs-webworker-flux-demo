@@ -17,13 +17,13 @@ var Tap = React.createClass({
         )
     }
   , inc: function () {
-        this.props.tap.postMessage({
+        this.props.worker.postMessage({
             type: 'TAP'
           , value: 1
         })
     }
   , dec: function () {
-        this.props.tap.postMessage({
+        this.props.worker.postMessage({
             type: 'TAP'
           , value: -1
         })
@@ -48,7 +48,7 @@ var App = React.createClass({
                     tap={this.state.tap}
                 />
                 <Tap
-                    tap={this.props.context.tap}
+                    worker={this.props.context.worker}
                 />
             </article>
         )
@@ -60,9 +60,8 @@ var App = React.createClass({
     }
   , componentDidMount: function () {
         var context = this.props.context
-        context.tap.addEventListener('message', function (ev) {
-            var data = ev.data
-            this.setState(data)
+        context.worker.addEventListener('message', function (ev) {
+            this.setState(ev.data)
         }.bind(this))
     }
 })
